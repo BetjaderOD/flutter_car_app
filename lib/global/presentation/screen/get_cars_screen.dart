@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/global/data/people_repository/car_repositoty.dart';
 import 'package:flutter_app/global/presentation/cubit/car_cubit.dart';
 import 'package:flutter_app/global/presentation/cubit/car_state.dart';
+import 'package:flutter_app/global/presentation/screen/create_car_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../data/model/car_model.dart';
 
 class CarListView extends StatelessWidget{
   const CarListView({Key? key}) : super(key: key);
@@ -19,10 +22,12 @@ class CarListView extends StatelessWidget{
         ),
         child: const CarListScreen(),
 
+
       )
     );
   }
 }
+
 
 class CarListScreen extends StatelessWidget {
   const CarListScreen({super.key});
@@ -36,7 +41,13 @@ class CarListScreen extends StatelessWidget {
           onPressed: () {
             carCubit.getCars();
           },
-          child: const Text('Get Cars'),
+          child: const Text('Obtener Carros'),
+        ),
+        ElevatedButton(
+          onPressed: () {
+           Navigator.push(context, MaterialPageRoute(builder: (context) => CarCreateView()));
+          },
+          child: const Text('Crear Carro'),
         ),
         BlocBuilder<CarCubit, CarState>(
           builder: (context, state) {
@@ -51,15 +62,21 @@ class CarListScreen extends StatelessWidget {
                     final car = cars[index];
                     return ListTile(
                       title: Text('${car.marca} ${car.modelo}'),
-                      subtitle: Text('${car.precio.toString()} - ${car.ceroACien.toString()}'),
+                      subtitle: Text('${car.precio.toString()} - ${car.ceroAcien.toString()}'),
                       trailing: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           IconButton(
                             icon: const Icon(Icons.edit),
                             onPressed: () {
-
-                              print('Editar: ${car.id}');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CarCreateView(
+                                    car: car,
+                                  ),
+                                ),
+                              );
                             },
                           ),
                           IconButton(
@@ -81,7 +98,7 @@ class CarListScreen extends StatelessWidget {
                                       TextButton(
                                         onPressed: () {
                                           // Llama al método deleteCar en el Cubit
-                                          carCubit.deleteCar(car.id);
+                                          carCubit.deleteCar(car.id!);
                                           Navigator.of(context).pop();
                                         },
                                         child: const Text('Eliminar'),
@@ -89,7 +106,6 @@ class CarListScreen extends StatelessWidget {
                                     ],
                                   );
                                 },
-                                //ds
                               );
                             },
                           ),

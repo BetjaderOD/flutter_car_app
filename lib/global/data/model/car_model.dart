@@ -1,16 +1,16 @@
 class CarModel {
-  final int id;
+  final int? id;
   final String marca;
   final String modelo;
   final double precio;
-  final int ceroACien;
+  final int ceroAcien;
 
   CarModel({
-    required this.id,
+    this.id,
     required this.marca,
     required this.modelo,
     required this.precio,
-    required this.ceroACien,
+    required this.ceroAcien,
   });
 
   factory CarModel.fromJson(Map<String, dynamic> json) {
@@ -19,7 +19,7 @@ class CarModel {
       marca: json['marca'],
       modelo: json['modelo'],
       precio: json['precio'].toDouble(),
-      ceroACien: json['ceroACien'],
+      ceroAcien: json['ceroAcien'],
     );
   }
 
@@ -29,7 +29,15 @@ class CarModel {
       'marca': marca,
       'modelo': modelo,
       'precio': precio,
-      'ceroACien': ceroACien,
+      'ceroAcien': ceroAcien,
     };
   }
+
+  Map<String, dynamic> toJsonWithoutId() {
+    final map = toJson();
+    map.remove('id');
+    return map;
+  }
+
+
 }

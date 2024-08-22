@@ -27,7 +27,9 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const CarListView(), // Cambia esto para mostrar tu vista
+        home: const CarListView(),
+
+
       ),
     );
   }

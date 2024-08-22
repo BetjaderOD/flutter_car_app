@@ -14,9 +14,9 @@ class CarRepository {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: json.encode(car.toJson()
-        ..remove('id')),
+      body: json.encode(car.toJsonWithoutId()),
     );
+    print(response.body.toString());
 
     if (response.statusCode != 200) {
       throw Exception('Error al crear el carro');
@@ -52,17 +52,26 @@ class CarRepository {
 
   Future<void> updateCar(CarModel car) async {
     final response = await http.put(
-      Uri.parse('$apiUrl/update'),
+      Uri.parse('$apiUrl/update/${car.id}'),
       headers: {
         'Content-Type': 'application/json',
       },
-      body: json.encode(car.toJson()..remove('id')),
+      body: json.encode({
+        'marca': car.marca,
+        'modelo': car.modelo,
+        'precio': car.precio.toString(),
+        'ceroAcien': car.ceroAcien.toString(),
+      }),
     );
+    print('response editar');
+    print(response);
 
     if (response.statusCode != 200) {
       throw Exception('Error al actualizar el carro');
     }
   }
+
+
 
   Future<void> deleteCar(String id) async {
     final response = await http.delete(
